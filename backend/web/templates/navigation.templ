@@ -1,0 +1,20 @@
+package templates
+
+templ Navigation() {
+<nav class="bg-gray-800 text-white p-4">
+    <div class="container mx-auto flex items-center justify-between">
+        <a href="/" class="text-xl font-bold">My App</a>
+        <div class="space-x-4">
+            <a href="/" hx-get="/" hx-target="#main-content" hx-push-url="true" class="hover:underline">Home</a>
+            <a href="/users" hx-get="/users" hx-target="#main-content" hx-push-url="true"
+                class="hover:underline">Users</a>
+            <a href="/settings" hx-get="/settings" hx-target="#main-content" hx-push-url="true"
+                class="hover:underline">Settings</a>
+            <div id="auth-menu">
+                <button hx-get="/auth/login-form" hx-target="#auth-modal"
+                    class="bg-blue-500 px-3 py-1 rounded">Login</button>
+            </div>
+        </div>
+    </div>
+</nav>
+}
