@@ -12,5 +12,8 @@ func NewRouter(postHandler *handlers.PostHandler) http.Handler {
 	r.Get("/", postHandler.List)
 	r.Get("/posts/new", postHandler.NewForm)
 	r.Post("/posts", postHandler.Create)
+
+	staticDir := http.Dir("static")
+	r.Handle("/static/*", http.StripPrefix("/static/", http.FileServer(staticDir)))
 	return r
 }

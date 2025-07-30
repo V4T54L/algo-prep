@@ -1,8 +1,8 @@
-
 package repository
 
 import (
 	"app/internal/domain/aggregate"
+	"app/internal/domain/repository"
 	"context"
 	"errors"
 	"sync"
@@ -13,7 +13,7 @@ type InMemoryUserRepo struct {
 	users map[string]*aggregate.User
 }
 
-func NewInMemoryUserRepo() *InMemoryUserRepo {
+func NewInMemoryUserRepo() repository.UserRepository {
 	return &InMemoryUserRepo{users: make(map[string]*aggregate.User)}
 }
 

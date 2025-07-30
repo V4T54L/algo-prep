@@ -1,8 +1,8 @@
-
 package repository
 
 import (
 	"app/internal/domain/aggregate"
+	"app/internal/domain/repository"
 	"context"
 	"errors"
 	"sync"
@@ -13,7 +13,7 @@ type InMemoryPostRepo struct {
 	posts map[string]*aggregate.Post
 }
 
-func NewInMemoryPostRepo() *InMemoryPostRepo {
+func NewInMemoryPostRepo() repository.PostRepository {
 	return &InMemoryPostRepo{posts: make(map[string]*aggregate.Post)}
 }
 
