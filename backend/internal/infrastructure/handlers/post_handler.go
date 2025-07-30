@@ -18,12 +18,11 @@ func NewPostHandler(u usecase.PostUseCase, r template.TemplRenderer) *PostHandle
 
 func (h *PostHandler) List(w http.ResponseWriter, r *http.Request) {
 	posts, _ := h.usecase.ListPosts(r.Context())
-	// h.renderer.Render(w, r, templates.PostList(posts))
-	h.renderer.Render(w,r,templates.PostList(posts))
+	h.renderer.Render(w, r, templates.PostList(posts), templates.Base(templates.PostList(posts)))
 }
 
 func (h *PostHandler) NewForm(w http.ResponseWriter, r *http.Request) {
-	h.renderer.Render(w, r, templates.PostForm())
+	h.renderer.Render(w, r, templates.PostForm(), templates.Base(templates.PostForm()))
 }
 
 func (h *PostHandler) Create(w http.ResponseWriter, r *http.Request) {

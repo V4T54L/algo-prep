@@ -14,14 +14,14 @@ func NewTemplRenderer() *TemplRenderer {
 	return &TemplRenderer{}
 }
 
-func (t *TemplRenderer) Render(w http.ResponseWriter, r *http.Request, component templ.Component) error {
-	// if c, ok := component.(interface {
-	// 	Render(context.Context, http.ResponseWriter) error
-	// }); ok {
-	// 	return c.Render(r.Context(), w)
-	// }
-	// http.Error(w, "invalid template component", http.StatusInternalServerError)
+func (t *TemplRenderer) Render(w http.ResponseWriter, r *http.Request, partial, full templ.Component) error {
+	var component templ.Component
 
+	if val, ok := r.Header["Hx-Request"]; ok && val[0] == "true" {
+		component = partial
+	} else {
+		component = full
+	}
 	templ.Handler(component).ServeHTTP(w, r)
 	return nil
 }

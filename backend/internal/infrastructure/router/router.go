@@ -1,10 +1,10 @@
-
 package router
 
 import (
 	"app/internal/infrastructure/handlers"
-	"github.com/go-chi/chi/v5"
 	"net/http"
+
+	"github.com/go-chi/chi/v5"
 )
 
 func NewRouter(postHandler *handlers.PostHandler) http.Handler {
