@@ -1,2 +1,2 @@
-**/templates/*.go
+**/*_templ.go
 **/tmp/*

@@ -1,20 +1,71 @@
 package templates
 
 templ Navigation() {
-<nav class="bg-gray-800 text-white p-4">
-    <div class="container mx-auto flex items-center justify-between">
-        <a href="/" class="text-xl font-bold">My App</a>
-        <div class="space-x-4">
-            <a href="/" hx-get="/" hx-target="#main-content" hx-push-url="true" class="hover:underline">Home</a>
-            <a href="/users" hx-get="/users" hx-target="#main-content" hx-push-url="true"
-                class="hover:underline">Users</a>
-            <a href="/settings" hx-get="/settings" hx-target="#main-content" hx-push-url="true"
-                class="hover:underline">Settings</a>
-            <div id="auth-menu">
-                <button hx-get="/auth/login-form" hx-target="#auth-modal"
-                    class="bg-blue-500 px-3 py-1 rounded">Login</button>
-            </div>
-        </div>
-    </div>
-</nav>
+	<header class="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+		<div class="container flex h-16 items-center justify-between">
+			<div class="flex items-center space-x-4">
+				<div hx-get="/" hx-push-url="true" hx-target="#main-content">
+					<div class="flex items-center space-x-2 cursor-pointer">
+						<div class="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
+							<i class="w-5 h-5 text-primary-foreground" data-lucide="code"></i>
+						</div>
+						<span class="font-bold text-xl">AlgoPrep</span>
+					</div>
+				</div>
+				// Desktop Navigation
+				<nav class="hidden md:flex items-center space-x-1">
+					for _, v := range navigation {
+						@NavButton(v.name, v.href, v.icon)
+					}
+				</nav>
+			</div>
+			<div class="flex items-center space-x-2">
+				<i></i>
+				// {/* Mobile Navigation */}
+				// <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
+				//   <SheetTrigger asChild>
+				//     <button variant="ghost" size="icon" class="md:hidden">
+				//       <i class="w-5 h-5"></i>
+				//     </button>
+				//   </SheetTrigger>
+				//   <SheetContent side="right" class="w-80">
+				//     <div class="flex flex-col space-y-4 mt-8">
+				//       <div class="flex items-center space-x-2 mb-6">
+				//         <div class="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
+				//           <Code class="w-5 h-5 text-primary-foreground" />
+				//         </div>
+				//         <span class="font-bold text-xl">AlgoPrep</span>
+				//       </div>
+				//       {navigation.map((item) => (
+				//         <Link key={item.name} href={item.href}>
+				//           <Button
+				//             variant={location === item.href ? "secondary" : "ghost"}
+				//             class={cn(
+				//               "w-full justify-start space-x-2",
+				//               location === item.href && "bg-secondary"
+				//             )}
+				//             onClick={() => setIsMobileMenuOpen(false)}
+				//           >
+				//             <i class={`w-4 h-4`} data-lucide={item.icon} />
+				//             <span>{item.name}</span>
+				//           </Button>
+				//         </Link>
+				//       ))}
+				//     </div>
+				//   </SheetContent>
+				// </Sheet>
+			</div>
+		</div>
+	</header>
+}
+
+templ NavButton(name, href, icon string) {
+	<a hx-get={ href } hx-push-url="true" hx-target="#main-content">
+		<button
+			class="flex items-center space-x-2"
+		>
+			<i class="w-4 h-4" data-lucide={ icon }></i>
+			<span>{ name }</span>
+		</button>
+	</a>
 }

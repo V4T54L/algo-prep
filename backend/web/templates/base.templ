@@ -14,12 +14,14 @@ templ Base(component templ.Component) {
 			<script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 		</head>
 		<body class="h-full flex flex-col">
-			<header id="header-nav">
-				@Navigation()
-			</header>
+			@Navigation()
 			<main id="main-content" class="flex-1">
 				@component
 			</main>
+			<script src="https://unpkg.com/lucide@latest"></script>
+			<script>
+				lucide.createIcons();
+			</script>
 		</body>
 	</html>
 }
