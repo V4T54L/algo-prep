@@ -1,6 +1,6 @@
 package templates
 
-templ Base(component templ.Component) {
+templ Base(components []templ.Component) {
 	<!DOCTYPE html>
 	<html lang="en" class="h-full">
 		<head>
@@ -16,8 +16,12 @@ templ Base(component templ.Component) {
 		<body class="bg-gray-900 text-white font-sans">
 			@Navigation()
 			<main id="main-content" class="flex-1">
-				@component
+				for _, component := range components {
+					@component
+				}
 			</main>
+			@Footer()
+			,
 			<script src="https://unpkg.com/lucide@latest"></script>
 			<script>
 				lucide.createIcons();

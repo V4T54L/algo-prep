@@ -5,6 +5,8 @@ import (
 	"app/internal/infrastructure/template"
 	"app/web/templates"
 	"net/http"
+
+	"github.com/a-h/templ"
 )
 
 type PostHandler struct {
@@ -17,12 +19,12 @@ func NewPostHandler(u usecase.PostUseCase, r template.TemplRenderer) *PostHandle
 }
 
 func (h *PostHandler) List(w http.ResponseWriter, r *http.Request) {
-	posts, _ := h.usecase.ListPosts(r.Context())
-	h.renderer.Render(w, r, templates.PostList(posts), templates.Base(templates.PostList(posts)))
+	// posts, _ := h.usecase.ListPosts(r.Context())
+	h.renderer.Render(w, r, templates.Homepage(), templates.Base(([]templ.Component{templates.Homepage()})))
 }
 
 func (h *PostHandler) NewForm(w http.ResponseWriter, r *http.Request) {
-	h.renderer.Render(w, r, templates.PostForm(), templates.Base(templates.PostForm()))
+	h.renderer.Render(w, r, templates.PostForm(), templates.Base([]templ.Component{templates.PostForm()}))
 }
 
 func (h *PostHandler) Create(w http.ResponseWriter, r *http.Request) {
