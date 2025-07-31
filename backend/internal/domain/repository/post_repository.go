@@ -1,4 +1,3 @@
-
 package repository
 
 import (
@@ -7,7 +6,7 @@ import (
 )
 
 type PostRepository interface {
-	Save(ctx context.Context, post *aggregate.Post) error
-	FindByID(ctx context.Context, id string) (*aggregate.Post, error)
-	List(ctx context.Context) ([]*aggregate.Post, error)
+	Save(ctx context.Context, post *aggregate.PostDetail) error
+	FindByID(ctx context.Context, id int) (*aggregate.PostDetail, error)
+	List(ctx context.Context) ([]*aggregate.PostInfo, error)
 }

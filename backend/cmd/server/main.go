@@ -31,10 +31,11 @@ func main() {
 	renderer := template.NewTemplRenderer()
 
 	// Handlers
-	postHandler := handlers.NewPostHandler(postUC, *renderer)
+	postHandler := handlers.NewPostHandler(*postUC, *renderer)
+	appHandler := handlers.NewAppHandler(*postUC, *renderer)
 
 	// Router
-	r := router.NewRouter(postHandler)
+	r := router.NewRouter(postHandler, appHandler)
 
 	log.Println("Server running at :8080")
 	http.ListenAndServe(":8080", r)

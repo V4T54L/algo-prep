@@ -6,23 +6,18 @@ import (
 	"context"
 )
 
-type PostUseCase interface {
-	CreatePost(ctx context.Context, title, content, authorID string) (*aggregate.Post, error)
-	ListPosts(ctx context.Context) ([]*aggregate.Post, error)
-}
-
-type postUseCase struct {
+type PostUseCase struct {
 	svc *service.PostDomainService
 }
 
-func NewPostUseCase(svc *service.PostDomainService) PostUseCase {
-	return &postUseCase{svc: svc}
+func NewPostUseCase(svc *service.PostDomainService) *PostUseCase {
+	return &PostUseCase{svc: svc}
 }
 
-func (u *postUseCase) CreatePost(ctx context.Context, title, content, authorID string) (*aggregate.Post, error) {
+func (u *PostUseCase) CreatePost(ctx context.Context, title, content, authorID string) (*aggregate.PostDetail, error) {
 	return u.svc.CreatePost(ctx, title, content, authorID)
 }
 
-func (u *postUseCase) ListPosts(ctx context.Context) ([]*aggregate.Post, error) {
+func (u *PostUseCase) ListPosts(ctx context.Context) ([]*aggregate.PostInfo, error) {
 	return u.svc.ListPosts(ctx)
 }

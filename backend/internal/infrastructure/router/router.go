@@ -7,9 +7,10 @@ import (
 	"github.com/go-chi/chi/v5"
 )
 
-func NewRouter(postHandler *handlers.PostHandler) http.Handler {
+func NewRouter(postHandler *handlers.PostHandler, appHandler *handlers.AppHandler) http.Handler {
 	r := chi.NewRouter()
-	r.Get("/", postHandler.List)
+	r.Get("/", appHandler.GetHomePage)
+	r.Get("/posts", postHandler.List)
 	r.Get("/posts/new", postHandler.NewForm)
 	r.Post("/posts", postHandler.Create)
 	r.Get("/problems", func(w http.ResponseWriter, r *http.Request) {

@@ -1,4 +1,3 @@
-
 package aggregate
 
 import "time"
@@ -10,6 +9,14 @@ type User struct {
 	Password string
 	Created  time.Time
 	Updated  time.Time
+}
+
+type Author struct {
+	ID          int
+	Username    string
+	Name        string
+	AvatarURL   string
+	Designation string
 }
 
 func NewUser(id, email, username, password string) *User {

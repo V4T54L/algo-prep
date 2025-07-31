@@ -1,6 +1,8 @@
 package templates
 
-templ Homepage() {
+import "app/internal/domain/aggregate"
+
+templ Homepage(featuredPostsData []*aggregate.PostInfo) {
 	@Hero()
 	@Features()
 	@FeaturedPosts(featuredPostsData)

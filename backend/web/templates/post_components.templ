@@ -1,0 +1,88 @@
+package templates
+
+import "app/internal/domain/aggregate"
+
+templ PostHeader() {
+	<div class="flex justify-between items-center flex-wrap gap-4 mb-6">
+		<div>
+			<h1 class="text-3xl font-bold">Posts</h1>
+			<p class="text-gray-400 text-sm">Read insights, tips, and experiences from the community</p>
+		</div>
+		<a href="/posts/create" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded font-semibold">
+			+ Create Post
+		</a>
+	</div>
+}
+
+templ FilterBar() {
+	<div class="flex flex-col md:flex-row gap-4 mb-8">
+		<input
+			type="text"
+			placeholder="Search posts..."
+			class="flex-1 px-4 py-2 bg-gray-800 border border-gray-700 rounded focus:outline-none"
+			name="q"
+			value=""
+		/>
+		<select name="tag" class="bg-gray-800 border border-gray-700 px-4 py-2 rounded text-white">
+			<option value="">All Tags</option>
+			<option value="a">a</option>
+			<option value="b">b</option>
+			<option value="c">c</option>
+			// {{range .AvailableTags}}
+			// <option value="{{.}}" {if eq $.CurrentTag .}selected{{end}}>{{.}}</option>
+			// {{end}}
+		</select>
+		<select name="sort" class="bg-gray-800 border border-gray-700 px-4 py-2 rounded text-white">
+			// <option value="recent" {{if eq .SortBy "recent"}}selected{{end}}>Most Recent</option>
+			// <option value="popular" {{if eq .SortBy "popular"}}selected{{end}}>Most Liked</option>
+			// <option value="comments" {{if eq .SortBy "comments"}}selected{{end}}>Most Commented</option>
+			<option value="recent">Most Recent</option>
+			<option value="popular">Most Liked</option>
+			<option value="comments">Most Commented</option>
+		</select>
+	</div>
+}
+
+templ PostListItem(post *aggregate.PostInfo) {
+	<div class="bg-gray-900 border border-gray-800 p-6 rounded-lg">
+		<h2 class="text-lg font-semibold mb-1">
+			<a href={post.ReadMoreLink} class="hover:underline">{ post.Title }</a>
+		</h2>
+		<p class="text-gray-400 text-sm mb-3">{ post.ShortContent }</p>
+		<!-- Tags -->
+		<div class="flex flex-wrap gap-2 mb-4">
+			for _, tag := range post.Tags {
+				<span class="bg-gray-800 text-gray-300 text-xs px-2 py-1 rounded">{ tag }</span>
+			}
+		</div>
+		<!-- Author & Stats -->
+		<div class="flex flex-wrap justify-between items-center text-sm text-gray-400">
+			<div class="flex items-center gap-3">
+				<img src={post.Author.AvatarURL} alt={post.Author.Name} class="w-8 h-8 rounded-full"/>
+				<div>
+					<p class="font-medium text-white">{ post.Author.Name }</p>
+					<p class="text-xs">{ post.Author.Designation }</p>
+				</div>
+			</div>
+			<div class="flex items-center gap-4 mt-3 md:mt-0 text-xs">
+				<span>{ post.CreatedAt }</span>
+				<span>• { post.Views } views</span>
+				<span>• { post.Comments } comments</span>
+				<a href="{post.ReadMoreLink}" class="ml-4 text-blue-500 hover:underline">Read</a>
+			</div>
+		</div>
+	</div>
+}
+
+templ PaginationControls() {
+	<nav class="flex justify-center mt-10">
+		<div class="flex items-center space-x-2">
+			<a href="?page=0" class="px-3 py-2 bg-gray-800 text-white rounded hover:bg-gray-700">&larr;</a>
+			for i:=0;i<3;i++ {
+				// <a href='?page={i}' class="px-3 py-2 rounded {{if eq . $.CurrentPage}}bg-blue-600 text-white{{else}}bg-gray-800 text-white hover:bg-gray-700{{end}}">
+				<a href="?page={i}" class="px-3 py-2 rounded bg-gray-800 text-white hover:bg-gray-700">{ i }</a>
+			}
+			<a href="?page=4" class="px-3 py-2 bg-gray-800 text-white rounded hover:bg-gray-700">&rarr;</a>
+		</div>
+	</nav>
+}

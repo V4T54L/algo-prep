@@ -19,8 +19,8 @@ func NewPostHandler(u usecase.PostUseCase, r template.TemplRenderer) *PostHandle
 }
 
 func (h *PostHandler) List(w http.ResponseWriter, r *http.Request) {
-	// posts, _ := h.usecase.ListPosts(r.Context())
-	h.renderer.Render(w, r, templates.Homepage(), templates.Base(([]templ.Component{templates.Homepage()})))
+	posts, _ := h.usecase.ListPosts(r.Context())
+	h.renderer.Render(w, r, templates.PostListPage(posts), templates.Base(([]templ.Component{templates.PostListPage(posts)})))
 }
 
 func (h *PostHandler) NewForm(w http.ResponseWriter, r *http.Request) {
