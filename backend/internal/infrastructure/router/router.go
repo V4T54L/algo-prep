@@ -7,16 +7,13 @@ import (
 	"github.com/go-chi/chi/v5"
 )
 
-func NewRouter(postHandler *handlers.PostHandler, appHandler *handlers.AppHandler) http.Handler {
+func NewRouter(postHandler *handlers.PostHandler, appHandler *handlers.AppHandler, problemHandler *handlers.ProblemHandler) http.Handler {
 	r := chi.NewRouter()
 	r.Get("/", appHandler.GetHomePage)
 	r.Get("/posts", postHandler.List)
 	r.Get("/posts/new", postHandler.NewForm)
 	r.Post("/posts", postHandler.Create)
-	r.Get("/problems", func(w http.ResponseWriter, r *http.Request) {
-		w.WriteHeader(http.StatusOK)
-		w.Write([]byte(`<h1 class="text-2xl font-bold mb-4">Problems</h1>`))
-	})
+	r.Get("/problems", problemHandler.GetProblemsPage)
 
 	staticDir := http.Dir("static")
 	r.Handle("/static/*", http.StripPrefix("/static/", http.FileServer(staticDir)))
