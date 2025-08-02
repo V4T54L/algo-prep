@@ -80,7 +80,7 @@ templ PaginationControls() {
 			<a href="?page=0" class="px-3 py-2 bg-gray-800 text-white rounded hover:bg-gray-700">&larr;</a>
 			for i:=0;i<3;i++ {
 				// <a href='?page={i}' class="px-3 py-2 rounded {{if eq . $.CurrentPage}}bg-blue-600 text-white{{else}}bg-gray-800 text-white hover:bg-gray-700{{end}}">
-				<a href="?page={i}" class="px-3 py-2 rounded bg-gray-800 text-white hover:bg-gray-700">{ i }</a>
+				<a href={fmt.Sprintf("?page=%d",i)} class="px-3 py-2 rounded bg-gray-800 text-white hover:bg-gray-700">{ i }</a>
 			}
 			<a href="?page=4" class="px-3 py-2 bg-gray-800 text-white rounded hover:bg-gray-700">&rarr;</a>
 		</div>
