@@ -1,0 +1,90 @@
+package templates
+
+import "app/internal/domain/aggregate"
+
+templ ViewPostHeader(post *aggregate.PostDetail) {
+	<div class="bg-gray-950 text-white p-6 rounded-lg shadow-md">
+		<div class="flex justify-between items-center">
+			<h1 class="text-3xl font-bold">{ post.Title }</h1>
+			<div class="text-sm text-gray-400">Views: { post.Views }</div>
+		</div>
+		<div class="flex gap-3 mt-2">
+			for _, tag := range post.Tags {
+				<span class="bg-gray-800 text-gray-300 text-xs px-2 py-1 rounded">{ tag }</span>
+			}
+		</div>
+		<div class="mt-4 flex items-center gap-2 text-sm text-gray-400">
+			<img src={ post.Author.AvatarURL } alt="Author Avatar" class="w-6 h-6 rounded-full"/>
+			<div>
+				<p class="font-semibold">{ post.Author.Name }</p>
+				<p>{ post.Author.Designation }</p>
+			</div>
+		</div>
+	</div>
+}
+
+templ PostContent(post *aggregate.PostDetail) {
+	<div class="bg-gray-900 text-white p-6 mt-6 rounded-lg shadow-md">
+		<div class="text-gray-300 text-sm">Posted on { post.CreatedAt }</div>
+		<div class="mt-4">{ post.Content }</div>
+	</div>
+}
+
+templ CommentSection(post *aggregate.PostDetail) {
+	<div class="mt-6 bg-gray-950 text-white p-6 rounded-lg shadow-md">
+		<h2 class="text-2xl font-bold">Comments ({ len(post.Comments) })</h2>
+		if len(post.Comments) == 0 {
+			<p class="text-gray-400 mt-4">No comments yet. Be the first to comment!</p>
+		} else {
+			for _, comment := range post.Comments {
+				<div class="mt-4 flex gap-4">
+					<img src={ comment.Author.AvatarURL } alt="Author Avatar" class="w-8 h-8 rounded-full"/>
+					<div class="flex-1">
+						<div class="flex justify-between items-center">
+							<div class="text-sm font-semibold">{ comment.Author.Name }</div>
+							<div class="text-xs text-gray-400">{ comment.CreatedAt }</div>
+						</div>
+						<p class="mt-2 text-sm">{ comment.Content }</p>
+						<div class="mt-2 flex gap-3 text-sm text-gray-400">
+							<span><i data-lucide="thumbs-up" class="w-4 h-4 mr-1"></i>{ comment.Likes }</span>
+							<span><i data-lucide="thumbs-down" class="w-4 h-4 mr-1"></i>{ comment.Dislikes }</span>
+						</div>
+					</div>
+				</div>
+			}
+		}
+		<form method="POST" hx-post="/add-comment" hx-target="#comment-list">
+			<div class="mt-6">
+				<textarea name="content" placeholder="Share your thoughts..." class="w-full px-4 py-2 bg-gray-800 text-white rounded-md" required></textarea>
+				<button type="submit" class="bg-blue-500 px-4 py-2 rounded-md text-white mt-2">Add Comment</button>
+			</div>
+		</form>
+	</div>
+}
+
+templ RelatedPosts() {
+	<div class="bg-gray-950 text-white p-6 rounded-lg shadow-md mt-6">
+		<h3 class="text-xl font-semibold">Related Posts</h3>
+		<ul class="mt-4 space-y-3">
+			<li><a href="/posts/1" class="text-blue-400 hover:underline">System Design Interview Guide</a></li>
+			<li><a href="/posts/2" class="text-blue-400 hover:underline">Binary Tree Algorithms Explained</a></li>
+		</ul>
+	</div>
+}
+
+templ PostDetailPage(post *aggregate.PostDetail) {
+	<section class="bg-gray-950 text-white min-h-screen px-4 md:px-12 py-10">
+		<div class="max-w-6xl mx-auto">
+			@ViewPostHeader(post)
+			<div class="lg:flex gap-6">
+				<div class="lg:w-3/4">
+					@PostContent(post)
+					@CommentSection(post)
+				</div>
+				<div class="lg:w-1/4 mt-6 lg:mt-0">
+					@RelatedPosts()
+				</div>
+			</div>
+		</div>
+	</section>
+}

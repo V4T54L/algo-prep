@@ -13,6 +13,7 @@ func NewRouter(
 ) http.Handler {
 	r := chi.NewRouter()
 	r.Get("/", appHandler.GetHomePage)
+	r.Get("/posts/1", postHandler.View)
 	r.Get("/posts", postHandler.List)
 	r.Get("/posts/new", postHandler.NewForm)
 	r.Post("/posts", postHandler.Create)

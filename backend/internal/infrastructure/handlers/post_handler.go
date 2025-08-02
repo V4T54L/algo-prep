@@ -35,3 +35,8 @@ func (h *PostHandler) Create(w http.ResponseWriter, r *http.Request) {
 	h.usecase.CreatePost(r.Context(), title, content, authorID)
 	http.Redirect(w, r, "/", http.StatusSeeOther)
 }
+
+func (h *PostHandler) View(w http.ResponseWriter, r *http.Request) {
+	post, _ := h.usecase.FindPostByID(r.Context(), 1)
+	h.renderer.Render(w, r, templates.PostDetailPage(post), templates.Base([]templ.Component{templates.PostDetailPage(post)}))
+}

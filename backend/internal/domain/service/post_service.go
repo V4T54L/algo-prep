@@ -22,3 +22,7 @@ func (s *PostDomainService) CreatePost(ctx context.Context, title, content, auth
 func (s *PostDomainService) ListPosts(ctx context.Context) ([]*aggregate.PostInfo, error) {
 	return s.repo.List(ctx)
 }
+
+func (s *PostDomainService) FindPostByID(ctx context.Context, id int) (*aggregate.PostDetail, error) {
+	return s.repo.FindByID(ctx, id)
+}

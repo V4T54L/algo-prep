@@ -21,3 +21,7 @@ func (u *PostUseCase) CreatePost(ctx context.Context, title, content, authorID s
 func (u *PostUseCase) ListPosts(ctx context.Context) ([]*aggregate.PostInfo, error) {
 	return u.svc.ListPosts(ctx)
 }
+
+func (s *PostUseCase) FindPostByID(ctx context.Context, id int) (*aggregate.PostDetail, error) {
+	return s.svc.FindPostByID(ctx, id)
+}
