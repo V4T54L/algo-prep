@@ -1,0 +1,138 @@
+package templates
+
+import (
+	"app/internal/domain/aggregate"
+	"fmt"
+	"strings"
+)
+
+// ContestHeader displays the header for the contest page
+templ ContestHeader() {
+	<div class="flex justify-between items-center flex-wrap gap-4 mb-6">
+		<div>
+			<h1 class="text-3xl font-bold">Coding Contests</h1>
+			<p class="text-gray-400 text-sm">Compete with developers worldwide and improve your coding skills</p>
+		</div>
+	</div>
+}
+
+// TabNavigation displays the navigation for the contest tabs (Upcoming, Live, Past)
+templ TabNavigation(selectedTab string) {
+	<div class="flex gap-4 mb-8">
+		<a
+			href="#upcoming"
+			class={ fmt.Sprintf("px-4 py-2 rounded-lg text-sm font-semibold %s", func() string {
+				if selectedTab == "Upcoming" {
+					return "bg-blue-500 text-white"
+				}
+				return "bg-gray-800 text-gray-400 hover:bg-gray-700"
+			}()) }
+		>
+			Upcoming
+		</a>
+		<a
+			href="#live"
+			class={ fmt.Sprintf("px-4 py-2 rounded-lg text-sm font-semibold %s", func() string {
+				if selectedTab == "Live" {
+					return "bg-blue-500 text-white"
+				}
+				return "bg-gray-800 text-gray-400 hover:bg-gray-700"
+			}()) }
+		>
+			Live
+		</a>
+		<a
+			href="#past"
+			class={ fmt.Sprintf("px-4 py-2 rounded-lg text-sm font-semibold %s", func() string {
+				if selectedTab == "Past" {
+					return "bg-blue-500 text-white"
+				}
+				return "bg-gray-800 text-gray-400 hover:bg-gray-700"
+			}()) }
+		>
+			Past
+		</a>
+	</div>
+}
+
+// ContestListItem displays each contest's details
+templ ContestListItem(contest *aggregate.ContestInfo) {
+	<div class="bg-gray-900 border border-gray-800 p-5 rounded-lg flex flex-col md:flex-row md:justify-between items-start md:items-center gap-4">
+		<div>
+			<h3 class="text-lg font-semibold text-white">{ contest.Title }</h3>
+			<p class="text-gray-400 text-sm mt-1">{ contest.Description }</p>
+			<div class="flex flex-wrap gap-2 mt-2">
+				<span
+					class={ fmt.Sprintf(`px-2 py-1 text-xs rounded bg-opacity-20 %s`, func() string {
+					switch contest.Difficulty {
+					case "Easy":
+						return "bg-green-600 text-green-300"
+					case "Medium":
+						return "bg-yellow-600 text-yellow-300"
+					case "Hard":
+						return "bg-red-600 text-red-300"
+					default:
+						return "bg-gray-700 text-gray-300"
+					}
+				}()) }
+				>
+					{ contest.Difficulty }
+				</span>
+				<span class="bg-gray-800 text-gray-300 text-xs px-2 py-1 rounded">
+					{ contest.Problems } problems
+				</span>
+				<span class="bg-gray-800 text-gray-300 text-xs px-2 py-1 rounded">
+					{ contest.Duration.Hours() } hours
+				</span>
+			</div>
+			<div class="text-sm text-gray-400 mt-2 flex flex-wrap gap-4">
+				<span>
+					<i data-lucide="calendar" class="inline w-4 h-4 mr-1"></i>
+					{ contest.StartTime.Format("1/2/2006") }
+				</span>
+				<span>
+					<i data-lucide="clock" class="inline w-4 h-4 mr-1"></i>
+					{ contest.StartTime.Format("03:04 PM") }
+				</span>
+				<span>
+					<i data-lucide="users" class="inline w-4 h-4 mr-1"></i>
+					{ contest.Registered } registered
+				</span>
+			</div>
+			<div class="text-yellow-400 mt-2 text-sm">
+				Prizes: { strings.Join(contest.Prizes, ", ") }
+			</div>
+		</div>
+		<div class="text-right">
+			<a href={ fmt.Sprintf("/contests/%s", contest.ID) } class="bg-gradient-to-r from-blue-500 to-green-400 text-white px-4 py-2 rounded font-semibold">
+				Register
+			</a>
+		</div>
+	</div>
+}
+
+// ContestList displays the list of contests
+templ ContestList(contests []*aggregate.ContestInfo) {
+	if len(contests) == 0 {
+		<p class="text-gray-400">No contests found.</p>
+	} else {
+		for _, contest := range contests {
+			@ContestListItem(contest)
+		}
+	}
+}
+
+// ContestListPage with Tab functionality
+templ ContestListPage(contests []*aggregate.ContestInfo, selectedTab string) {
+	<section class="bg-gray-950 text-white min-h-screen px-4 md:px-12 py-10">
+		<div class="max-w-6xl mx-auto">
+			@ContestHeader()
+			<!-- Tab Navigation -->
+			@TabNavigation(selectedTab)
+			<!-- Contest List Display -->
+			<div class="space-y-6 mt-4">
+				@ContestList(contests)
+			</div>
+		</div>
+	</section>
+}
